@@ -11,7 +11,8 @@ lazy val root = (project in file("."))
     name := "jna_test",
     libraryDependencies ++= Seq(
       "edu.berkeley.cs" %% "chisel3" % chiselVersion,
-      "edu.berkeley.cs" %% "chiseltest" % "0.5.1" % "test"
+      "edu.berkeley.cs" %% "chiseltest" % "0.5.1" % "test",
+      "net.java.dev.jna" % "jna" % "5.7.0"
     ),
     scalacOptions ++= Seq(
       "-language:reflectiveCalls",
