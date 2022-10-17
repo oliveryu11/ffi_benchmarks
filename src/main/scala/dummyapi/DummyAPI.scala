@@ -1,6 +1,7 @@
 package dummyapi
 
 import com.sun.jna._
+import os._
 
 // class HelloWorld { 
 //   Native.register("m"); 
@@ -12,7 +13,7 @@ import com.sun.jna._
 //   def get_favorite_number():Int
 // }
 
-class DummyApi {
+class DummyAPI {
   // private var _libc:libc = null
   // def run():libc = {
   //   if ( _libc == null ) {
@@ -28,14 +29,19 @@ class DummyApi {
   // val javaHome = System.getProperty("java.home")
   // val osIncludeName = System.getProperty("os.name")
   // println(javaHome, osIncludeName);
+  val soPath = os.pwd / "dummyapi" / "libdummyapi.so"
+  val so = NativeLibrary.getInstance(soPath.toString())
+  val add_one = so.getFunction("add_one")
+  val ret = add_one.invokePointer(Array(1))
+  //val so = os.resource() / "libdummyapi.so"
+  println(ret)
+  //val source = this.getClass.getResource("/libdummyapi.so").toString().substring(5)
+  //val so = NativeLibrary.getInstance(source)
+  //val c_add_one = so.getFunction("add_one")
 
-  val source = this.getClass.getResource("/libdummyapi.so").toString().substring(5)
-  val so = NativeLibrary.getInstance(source)
-  val c_add_one = so.getFunction("add_one")
-
-  def addOne(x: Int): Unit = { 
-    c_add_one.invoke(Array(c_add_one.invokePointer(Array()), Integer.valueOf(x)))
-  }
+  //def addOne(x: Int): Unit = {
+    //c_add_one.invoke(Array(c_add_one.invokePointer(Array()), Integer.valueOf(x)))
+  //}
 
   // val source = this.getClass.getResource("/libdummyapi.so").toString().substring(5)
   // println(source)
