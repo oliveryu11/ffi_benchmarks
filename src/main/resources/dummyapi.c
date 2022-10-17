@@ -1,6 +1,6 @@
 #include "dummyapi.h"
 
-/* returns my favorite number */
+/* adds one */
 int add_one(int x) {
     return x + 1;
 }

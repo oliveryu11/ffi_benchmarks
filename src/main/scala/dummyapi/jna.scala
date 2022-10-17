@@ -1,8 +1,6 @@
 package dummyapi
 
-import com.sun.jna.Library
-import com.sun.jna.Native
-import com.sun.jna.Platform
+import com.sun.jna._
 
 // class HelloWorld { 
 //   Native.register("m"); 
@@ -22,7 +20,26 @@ class DummyApi {
   //   }
   //   _libc
   // }
-  System.load("/home/oliveryu/jna_test/src/main/scala/dummyapi/libdummyapi.so")
+
+  
+  // Native.load("/home/oliveryu/jna_test/src/main/scala/dummyapi/libdummyapi.so")
   // System.loadLibrary("dummyapi")
-  @native def add_one(x: Int): Int
+  // val libPath = os.
+  // val javaHome = System.getProperty("java.home")
+  // val osIncludeName = System.getProperty("os.name")
+  // println(javaHome, osIncludeName);
+
+  val source = this.getClass.getResource("/libdummyapi.so").toString().substring(5)
+  val so = NativeLibrary.getInstance(source)
+  val c_add_one = so.getFunction("add_one")
+
+  def addOne(x: Int): Unit = { 
+    c_add_one.invoke(Array(c_add_one.invokePointer(Array()), Integer.valueOf(x)))
+  }
+
+  // val source = this.getClass.getResource("/libdummyapi.so").toString().substring(5)
+  // println(source)
+  // System.load(source)
+
+  // @native def addOne(x: Int): Int
 }
