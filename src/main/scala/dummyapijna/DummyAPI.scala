@@ -17,7 +17,13 @@ object DummyAPI {
 
   def add_one(i: Int) = {
     val ret = add_one_native.invokePointer(Array(i))
+    // println(ret)
   }
+
+  // def main(args: Array[String]): Unit = {
+  //   val result = DummyAPI.add_one(1)
+  //   println(s"add_one: $result")
+  // }
   
   // Native.load("/home/oliveryu/jna_test/src/main/scala/dummyapi/libdummyapi.so")
   // System.loadLibrary("dummyapi")
