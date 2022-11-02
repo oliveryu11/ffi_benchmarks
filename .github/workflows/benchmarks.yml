@@ -1,0 +1,16 @@
+name: benchmarks
+run-name: ${{ github.actor }} is benchmarking ffi
+on: [push]
+jobs:
+  run-jmh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 8
+      - name: Build and Benchmark
+        run: sbt jmh:run

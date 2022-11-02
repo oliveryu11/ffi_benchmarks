@@ -1,4 +1,4 @@
-package dummyapi
+package dummyapijna
 
 import org.scalatest.flatspec.AnyFlatSpec
 

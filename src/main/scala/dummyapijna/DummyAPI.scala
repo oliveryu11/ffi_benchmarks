@@ -1,17 +1,7 @@
-package dummyapi
+package dummyapijna
 
 import com.sun.jna._
 import os._
-
-// class HelloWorld { 
-//   Native.register("m"); 
-//   @native def cos(d: Double): Double; 
-//   @native def sin(d: Double): Double;
-// }
-
-// trait libdummy_api extends Library {
-//   def get_favorite_number():Int
-// }
 
 object DummyAPI {
 

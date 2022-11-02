@@ -1,4 +1,4 @@
-package dummyapi
+package dummyapijna
 
 import com.sun.jna._
 import os._
