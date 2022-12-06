@@ -7,13 +7,14 @@ object DummyAPI {
 
   // System.load("/home/oliveryu/ffi_benchmarks/target/native/include/libdummyapi.so")
   System.load(soPath.toString())
+  println(soPath.toString())
   
   @native def add_one(i: Int): Int 
 
-  // def main(args: Array[String]): Unit = {
-  //   val result = DummyAPI.add_one(1)
-  //   println(s"add_one: $result")
-  // }
+  def main(args: Array[String]): Unit = {
+    val result = DummyAPI.add_one(1)
+    println(s"add_one: $result")
+  }
 }
 
 // object DummyAPI {
