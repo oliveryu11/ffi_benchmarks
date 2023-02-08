@@ -3,6 +3,8 @@ package jni_api
 
 object JniAPI {
   /* Define and load the path of the bridge C library */
+  val path = System.getProperty("java.library.path")
+  println(path.toString())
   val soPath = os.pwd / "target" / "native" / "include" / "libjnibridge.so"
   println(soPath.toString())
   val check_property = System.getProperty("jnibridge.loaded");

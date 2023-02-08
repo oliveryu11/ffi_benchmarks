@@ -2,12 +2,19 @@ package dummyapijni
 
 // import os._
 
-object DummyAPI {
-  val soPath = os.pwd / "target" / "native" / "include" / "libdummyapi.so"
 
-  // System.load("/home/oliveryu/ffi_benchmarks/target/native/include/libdummyapi.so")
-  System.load(soPath.toString())
-  println(soPath.toString())
+object DummyAPI {
+  // val soPath = os.pwd / "target" / "native" / "include" / "libdummyapi.so"
+
+  // println(soPath.toString())
+
+  // val check_property = System.getProperty("jnibridge.loaded");
+  // println(check_property)
+  // if (System.getProperty("dummyapijni.loaded") != "true") {
+  //   println("Loading libdummyapi")
+  //   System.load(soPath.toString())
+  //   System.setProperty("dummyapijni.loaded", "true")
+  // }
   
   @native def add_one(i: Int): Int 
 
