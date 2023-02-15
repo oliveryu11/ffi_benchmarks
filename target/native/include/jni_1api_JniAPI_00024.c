@@ -9,6 +9,7 @@
 
 // Maps ID --> ptr to shared object
 void *map[1024];
+void *add_one_ptrs[1024];
 
 // id_counter (increment by one)
 pthread_mutex_t id_lock; 
@@ -38,8 +39,15 @@ JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_load_1so
     id_counter++;
     pthread_mutex_unlock(&id_lock);
 
+    // Declare desired function
+    int (*add_one)(int);
+
+    // Get function pointer for native add_one implementation
+    *(void **) (&add_one) = dlsym(so_handle, "add_one_c");
+
     // Store pointer to shared object in map
-    map[so_id] = so_handle; // pointer to SO
+    // map[so_id] = so_handle; // pointer to SO
+    add_one_ptrs[so_id] = add_one;
 
     // Return shared object id
     return so_id;
@@ -50,14 +58,9 @@ JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_load_1so
 JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_call_1add_1one
   (JNIEnv* env, jobject obj, jint so_id, jint arg) {
     // Get shared object mapped to by ID
-    void *handle = map[so_id];
-    
-    // Declare desired function
     int (*add_one)(int);
-
-    // Testing non JNI shared object
-    *(void **) (&add_one) = dlsym(handle, "add_one_c");
-
+    *(void **) (&add_one) = add_one_ptrs[so_id];
+    
     char *error;
     if ((error = dlerror()) != NULL)  {
         fprintf(stderr, "%s\n", error);

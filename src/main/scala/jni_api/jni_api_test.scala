@@ -6,31 +6,30 @@ import scala.jdk.CollectionConverters._
 
 object JniAPI {
   /* Define and load the path of the bridge C library */
+  val soPath = os.pwd / "target" / "native" / "include" / "libjnibridge.so"
+  System.load(soPath.toString())
+
+  /* Check if native library already previously loaded in which case skip to avoid double load on native library DON'T NEED IF YOU ADD `fork := true` in build.sbt. */
+
   // val libs = classOf[ClassLoader].getDeclaredField("loadedLibraryNames")
   // println(loadedLibs())
-  val path = System.getProperty("java.library.path")
-  println(path.toString())
-  val soPath = os.pwd / "target" / "native" / "include" / "libjnibridge.so"
-  println(soPath.toString())
-  val check_property = System.getProperty("jnibridge.loaded");
-  println(check_property)
-  if (System.getProperty("jnibridge.loaded") != "true") {
-    println("Loading libjnibridge")
-    System.load(soPath.toString())
-    System.setProperty("jnibridge.loaded", "true")
-  }
+  // val path = System.getProperty("java.library.path")
+  // println(path.toString())
+  // val soPath = os.pwd / "target" / "native" / "include" / "libjnibridge.so"
+  // println(soPath.toString())
+  // val check_property = System.getProperty("jnibridge.loaded");
+  // println(check_property)
+  // if (System.getProperty("jnibridge.loaded") != "true") {
+  //   println("Loading libjnibridge")
+  //   System.load(soPath.toString())
+  //   System.setProperty("jnibridge.loaded", "true")
+  // }
 
   /* Takes in a path and returns a unique shared object id that corresponds with the shared object at that path */
   @native def load_so(path: String): Int
   
   /* Takes in shared object id and calls C library which elegates the call to the shared object associated with the provided id */
   @native def call_add_one(id: Int, arg: Int): Int
-
-  def loadedLibs(): Seq[String] = {
-    val libs = classOf[ClassLoader].getDeclaredField("loadedLibraryNames")
-    libs.setAccessible(true)
-    (libs.get(ClassLoader.getSystemClassLoader()).asInstanceOf[java.util.List[String]]).asScala.toList
-  }
 
   def main(args: Array[String]): Unit = {
     // Load two shared objects with same interface but different implementations
