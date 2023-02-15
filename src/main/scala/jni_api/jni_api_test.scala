@@ -1,8 +1,13 @@
 // package declaration
 package jni_api
 
+import scala.jdk.CollectionConverters._
+
+
 object JniAPI {
   /* Define and load the path of the bridge C library */
+  // val libs = classOf[ClassLoader].getDeclaredField("loadedLibraryNames")
+  // println(loadedLibs())
   val path = System.getProperty("java.library.path")
   println(path.toString())
   val soPath = os.pwd / "target" / "native" / "include" / "libjnibridge.so"
@@ -20,6 +25,12 @@ object JniAPI {
   
   /* Takes in shared object id and calls C library which elegates the call to the shared object associated with the provided id */
   @native def call_add_one(id: Int, arg: Int): Int
+
+  def loadedLibs(): Seq[String] = {
+    val libs = classOf[ClassLoader].getDeclaredField("loadedLibraryNames")
+    libs.setAccessible(true)
+    (libs.get(ClassLoader.getSystemClassLoader()).asInstanceOf[java.util.List[String]]).asScala.toList
+  }
 
   def main(args: Array[String]): Unit = {
     // Load two shared objects with same interface but different implementations
@@ -40,3 +51,4 @@ object JniAPI {
     println(result_2)
   }
 }
+

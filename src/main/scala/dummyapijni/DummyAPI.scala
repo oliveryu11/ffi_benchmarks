@@ -4,11 +4,14 @@ package dummyapijni
 
 
 object DummyAPI {
-  // val soPath = os.pwd / "target" / "native" / "include" / "libdummyapi.so"
+  val soPath = os.pwd / "target" / "native" / "include" / "libdummyapi.so"
+  System.load(soPath.toString())
+
+  /* Commented out for benchmarking purposes */
 
   // println(soPath.toString())
 
-  // val check_property = System.getProperty("jnibridge.loaded");
+  // val check_property = System.getProperty("dummyapijni.loaded");
   // println(check_property)
   // if (System.getProperty("dummyapijni.loaded") != "true") {
   //   println("Loading libdummyapi")
