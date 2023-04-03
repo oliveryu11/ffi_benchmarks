@@ -69,47 +69,47 @@ JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_load_1so
     /* Accessing Harness APIs */
     // TODO: make it into some for loop for simplification
 
-    void* (*sim_init)();
+    void * (*sim_init)();
     *(void **) (&sim_init) = dlsym(so_handle, "sim_init");
     sim_init_ptrs[so_id] = sim_init;
 
-    int (*step)(int);
+    int64_t (*step)(int32_t);
     *(void **) (&step) = dlsym(so_handle, "step");
     step_ptrs[so_id] = step;
 
-    int (*update)(int);
+    void (*update)(void *);
     *(void **) (&update) = dlsym(so_handle, "update");
     step_ptrs[so_id] = step;
 
-    int (*finish)(int);
+    void (*finish)(void *);
     *(void **) (&finish) = dlsym(so_handle, "finish");
     finish_ptrs[so_id] = finish;
 
-    int (*reset_coverage)(int);
+    void (*reset_coverage)(void *);
     *(void **) (&reset_coverage) = dlsym(so_handle, "resetCoverage");
     reset_coverage_ptrs[so_id] = reset_coverage;
 
-    int (*write_coverage)(int);
+    void (*write_coverage)(void *);
     *(void **) (&write_coverage) = dlsym(so_handle, "writeCoverage");
     write_coverage_ptrs[so_id] = step;
 
-    int (*poke)(int);
+    void (*poke)(void *, int32_t, int64_t);
     *(void **) (&poke) = dlsym(so_handle, "poke");
     poke_ptrs[so_id] = poke;
 
-    int (*peek)(int);
+    int (*peek)(void *, int32_t);
     *(void **) (&peek) = dlsym(so_handle, "peek");
     peek_ptrs[so_id] = peek;
 
-    int (*poke_wide)(int);
+    void (*poke_wide)(void *, int32_t, int32_t, int64_t);
     *(void **) (&poke_wide) = dlsym(so_handle, "poke_wide");
     poke_wide_ptrs[so_id] = poke_wide;
 
-    int (*peek_wide)(int);
+    int64_t (*peek_wide)(void *, int32_t, int32_t);
     *(void **) (&peek_wide) = dlsym(so_handle, "peek_wide");
     peek_wide_ptrs[so_id] = peek_wide;
 
-    int (*set_args)(int);
+    void (*set_args)(void *, int32_t, char**);
     *(void **) (&set_args) = dlsym(so_handle, "set_args");
     set_args_ptrs[so_id] = set_args;
 
@@ -117,13 +117,13 @@ JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_load_1so
     return so_id;
   }
 
-JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1sim_1init
+JNIEXPORT jlong JNICALL Java_jni_1api_JniAPI_00024_call_1sim_1init
   (JNIEnv *env, jobject obj, jint so_id) {
-    void (*sim_init)();
+    void * (*sim_init)();
     *(void **) (&sim_init) = sim_init_ptrs[so_id];
 
     // Invoke API on given shared object
-    return sim_init();
+    return (long int) sim_init();
   }
 
 /*
@@ -132,11 +132,11 @@ JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1sim_1init
  * Signature:  (I)I
  */
 JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_call_1step
-  (JNIEnv *env, jobject obj, jint so_id, jint cycles) {
-    int64_t (*step)(int32_t);
+  (JNIEnv *env, jobject obj, jint so_id, jlong s, jint cycles) {
+    int64_t (*step)(void *, int32_t);
     *(void **) (&step) = step_ptrs[so_id];
 
-    return step(cycles);
+    return step((void *) s, cycles);
   }
 
 /*
@@ -145,11 +145,11 @@ JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_call_1step
  * Signature:  ()V
  */
 JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1update
-  (JNIEnv *env, jobject obj, jint so_id) {
-    void (*update)();
+  (JNIEnv *env, jobject obj, jint so_id, jlong s) {
+    void (*update)(void *);
     *(void **) (&update) = update_ptrs[so_id];
 
-    update();
+    update((void *) s);
   }
 
 /*
@@ -158,11 +158,11 @@ JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1update
  * Signature:  ()V
  */
 JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1finish
-  (JNIEnv *env, jobject obj, jint so_id) {
-    void (*finish)();
+  (JNIEnv *env, jobject obj, jint so_id, jlong s) {
+    void (*finish)(void *);
     *(void **) (&finish) = finish_ptrs[so_id];
 
-    finish();
+    finish((void *) s);
   }
 
 /*
@@ -171,11 +171,11 @@ JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1finish
  * Signature:  ()V
  */
 JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1resetCoverage
-  (JNIEnv *env, jobject obj, jint so_id) {
-    void (*reset_coverage)();
+  (JNIEnv *env, jobject obj, jint so_id, jlong s) {
+    void (*reset_coverage)(void *);
     *(void **) (&reset_coverage) = reset_coverage_ptrs[so_id];
 
-    reset_coverage();
+    reset_coverage((void *) s);
   }
 
 /*
@@ -184,15 +184,15 @@ JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1resetCoverage
  * Signature:  (Ljava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1writeCoverage
-  (JNIEnv *env, jobject obj, jint so_id, jstring filename) {
+  (JNIEnv *env, jobject obj, jint so_id, jlong s, jstring filename) {
     const char* filename_str = (*env)->GetStringUTFChars(env, filename, 0);
     char cap[128];
     strcpy(cap, filename_str);
     (*env)->ReleaseStringUTFChars(env, filename, filename_str);
-    void (*write_coverage)(char*);
+    void (*write_coverage)(void *, char*);
     *(void **) (&write_coverage) = write_coverage_ptrs[so_id];
 
-    write_coverage(cap);
+    write_coverage((void *) s, cap);
   }
 
 /*
@@ -201,11 +201,11 @@ JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1writeCoverage
  * Signature:  (II)I
  */
 JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_call_1poke
-  (JNIEnv *env, jobject obj, jint so_id, jint id, jint value) {
-    void (*poke)(int32_t, int64_t);
+  (JNIEnv *env, jobject obj, jint so_id, jlong s, jint id, jint value) {
+    void (*poke)(void *, int32_t, int64_t);
     *(void **) (&poke) = poke_ptrs[so_id];
 
-    poke(id, value);
+    poke((void *) s, id, value);
   }
 
 /*
@@ -214,11 +214,11 @@ JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_call_1poke
  * Signature:  (III)I
  */
 JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_call_1peek
-  (JNIEnv *env, jobject obj, jint so_id, jint id) {
-    int64_t (*peek)(int32_t);
+  (JNIEnv *env, jobject obj, jint so_id, jlong s, jint id) {
+    int64_t (*peek)(void *, int32_t);
     *(void **) (&peek) = peek_ptrs[so_id];
 
-    return peek(id);
+    return peek((void *) s, id);
   }
 
 /*
@@ -227,11 +227,11 @@ JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_call_1peek
  * Signature:  (III)V
  */
 JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1poke_1wide
-  (JNIEnv *env, jobject obj, jint so_id, jint id, jint offset, jint value) {
-    void (*poke_wide)(int32_t, int32_t, int64_t);
+  (JNIEnv *env, jobject obj, jint so_id, jlong s, jint id, jint offset, jint value) {
+    void (*poke_wide)(void*, int32_t, int32_t, int64_t);
     *(void **) (&poke_wide) = poke_wide_ptrs[so_id];
 
-    poke_wide(id, offset, value);
+    poke_wide((void *) s, id, offset, value);
   }
 
 /*
@@ -240,22 +240,22 @@ JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1poke_1wide
  * Signature:  (II)I
  */
 JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_call_1peek_1wide
-  (JNIEnv *env, jobject obj, jint so_id, jint id, jint offset) {
-    int64_t (*peek_wide)(int32_t, int32_t);
+  (JNIEnv *env, jobject obj, jint so_id, jlong s, jint id, jint offset) {
+    int64_t (*peek_wide)(void*, int32_t, int32_t);
     *(void **) (&peek_wide) = peek_wide_ptrs[so_id];
 
-    return peek_wide(id, offset);
+    return peek_wide((void *) s, id, offset);
   }
 
-JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_set_1args
-  (JNIEnv *env, jobject obj, jint so_id, jint argc, jstring argv) {
+JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1set_1args
+  (JNIEnv *env, jobject obj, jint so_id, jlong s, jint argc, jstring argv) {
     const char* argv_str = (*env)->GetStringUTFChars(env, argv, 0);
     char cap[128];
     strcpy(cap, argv_str);
     (*env)->ReleaseStringUTFChars(env, argv, argv_str);
-    void (*set_args)(int32_t, char **);
+    void (*set_args)(void *, int32_t, char **);
     *(void **) (&set_args) = set_args_ptrs[so_id];
 
-    set_args(argc, (char **) cap);
+    set_args((void *) s, argc, (char **) cap);
   }
 

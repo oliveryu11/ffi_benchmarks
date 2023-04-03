@@ -18,90 +18,90 @@ JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_load_1so
 /*
  * Class:      jni_1api_JniAPI_00024
  * Method:     call_1sim_1init
- * Signature:  (I)V
+ * Signature:  (I)J
  */
-JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1sim_1init
+JNIEXPORT jlong JNICALL Java_jni_1api_JniAPI_00024_call_1sim_1init
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:      jni_1api_JniAPI_00024
  * Method:     call_1step
- * Signature:  (II)I
+ * Signature:  (IJI)I
  */
 JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_call_1step
-  (JNIEnv *, jobject, jint, jint);
+  (JNIEnv *, jobject, jint, jlong, jint);
 
 /*
  * Class:      jni_1api_JniAPI_00024
  * Method:     call_1update
- * Signature:  (I)V
+ * Signature:  (IJ)V
  */
 JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1update
-  (JNIEnv *, jobject, jint);
+  (JNIEnv *, jobject, jint, jlong);
 
 /*
  * Class:      jni_1api_JniAPI_00024
  * Method:     call_1finish
- * Signature:  (I)V
+ * Signature:  (IJ)V
  */
 JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1finish
-  (JNIEnv *, jobject, jint);
+  (JNIEnv *, jobject, jint, jlong);
 
 /*
  * Class:      jni_1api_JniAPI_00024
  * Method:     call_1resetCoverage
- * Signature:  (I)V
+ * Signature:  (IJ)V
  */
 JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1resetCoverage
-  (JNIEnv *, jobject, jint);
+  (JNIEnv *, jobject, jint, jlong);
 
 /*
  * Class:      jni_1api_JniAPI_00024
  * Method:     call_1writeCoverage
- * Signature:  (ILjava/lang/String;)V
+ * Signature:  (IJLjava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1writeCoverage
-  (JNIEnv *, jobject, jint, jstring);
+  (JNIEnv *, jobject, jint, jlong, jstring);
 
 /*
  * Class:      jni_1api_JniAPI_00024
  * Method:     call_1poke
- * Signature:  (III)I
+ * Signature:  (IJII)I
  */
 JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_call_1poke
-  (JNIEnv *, jobject, jint, jint, jint);
+  (JNIEnv *, jobject, jint, jlong, jint, jint);
 
 /*
  * Class:      jni_1api_JniAPI_00024
  * Method:     call_1peek
- * Signature:  (II)I
+ * Signature:  (IJI)I
  */
 JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_call_1peek
-  (JNIEnv *, jobject, jint, jint);
+  (JNIEnv *, jobject, jint, jlong, jint);
 
 /*
  * Class:      jni_1api_JniAPI_00024
  * Method:     call_1poke_1wide
- * Signature:  (IIII)V
+ * Signature:  (IJIII)V
  */
 JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1poke_1wide
-  (JNIEnv *, jobject, jint, jint, jint, jint);
+  (JNIEnv *, jobject, jint, jlong, jint, jint, jint);
 
 /*
  * Class:      jni_1api_JniAPI_00024
  * Method:     call_1peek_1wide
- * Signature:  (III)I
+ * Signature:  (IJII)I
  */
 JNIEXPORT jint JNICALL Java_jni_1api_JniAPI_00024_call_1peek_1wide
-  (JNIEnv *, jobject, jint, jint, jint);
+  (JNIEnv *, jobject, jint, jlong, jint, jint);
 
 /*
  * Class:      jni_1api_JniAPI_00024
- * Method:     set_1args
- * Signature:  (IILjava/lang/String;)V
+ * Method:     call_1set_1args
+ * Signature:  (IJILjava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_set_1args
-  (JNIEnv *, jobject, jint, jint, jstring);
+JNIEXPORT void JNICALL Java_jni_1api_JniAPI_00024_call_1set_1args
+  (JNIEnv *, jobject, jint, jlong, jint, jstring);
 
 #ifdef __cplusplus
 }
